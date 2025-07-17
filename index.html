@@ -225,7 +225,11 @@ td {
       },
     ];
 
-    const aprobados = new Set();
+    const aprobados = new Set(JSON.parse(localStorage.getItem("aprobados")) || []);
+function guardarEstado() {
+  localStorage.setItem("aprobados", JSON.stringify(Array.from(aprobados)));
+}
+
 
     function puedeTomar(curso) {
       if (!curso.req) return true;
