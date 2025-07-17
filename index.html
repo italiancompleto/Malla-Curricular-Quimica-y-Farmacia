@@ -246,4 +246,38 @@
           divSem.appendChild(titulo);
 
           semestre.cursos.forEach(curso => {
-            const divCurso = document.createElement('d
+            const divCurso = document.createElement('div');
+            divCurso.className = 'curso';
+            divCurso.textContent = curso.nombre;
+
+            if (!puedeTomar(curso)) {
+              divCurso.classList.add('bloqueado');
+            }
+
+            if (aprobados.has(curso.nombre)) {
+              divCurso.classList.add('completado');
+            }
+
+            divCurso.onclick = () => {
+              if (aprobados.has(curso.nombre)) {
+                aprobados.delete(curso.nombre);
+              } else if (puedeTomar(curso)) {
+                aprobados.add(curso.nombre);
+              }
+              renderMalla();
+            };
+
+            divSem.appendChild(divCurso);
+          });
+
+          divAnio.appendChild(divSem);
+        });
+
+        contenedor.appendChild(divAnio);
+      });
+    }
+
+    renderMalla();
+  </script>
+</body>
+</html>
