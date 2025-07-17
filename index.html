@@ -271,11 +271,13 @@ function guardarEstado() {
 
             divCurso.onclick = () => {
               if (aprobados.has(curso.nombre)) {
-                aprobados.delete(curso.nombre);
-              } else if (puedeTomar(curso)) {
-                aprobados.add(curso.nombre);
-              }
-              render();
+  aprobados.delete(curso.nombre);
+} else if (puedeTomar(curso)) {
+  aprobados.add(curso.nombre);
+}
+guardarEstado();  // <--- Esta línea nueva guarda los ramos marcados
+render();
+
             };
 
             td.appendChild(divCurso);
