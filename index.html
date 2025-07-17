@@ -1,8 +1,135 @@
-<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Malla Química y Farmacia</title>
-  ...
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Malla Curricular - Química y Farmacia</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff0f5;
+      color: #333;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #a64d79;
+    }
+    .year {
+      margin-bottom: 2em;
+    }
+    .semester {
+      background: #fbeaf1;
+      padding: 1em;
+      border-radius: 1em;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      margin-bottom: 1em;
+    }
+    .course {
+      padding: 8px;
+      border-radius: 8px;
+      margin: 4px 0;
+      background-color: #fcd6e0;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    .course:hover {
+      background-color: #fbb6c5;
+    }
+    .completed {
+      text-decoration: line-through;
+      background-color: #d3ffd3 !important;
+    }
+    .available {
+      border: 2px solid #b26ca2;
+    }
+    .locked {
+      opacity: 0.4;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Química y Farmacia</h1>
+  <div id="malla"></div>
+
+  <script>
+    const cursos = [
+      // Año 1
+      { nombre: "Matemáticas I", cod: "mat1", requisitos: [] },
+      { nombre: "Química General I", cod: "qg1", requisitos: [] },
+      { nombre: "Biología Celular", cod: "bio1", requisitos: [] },
+      { nombre: "Introducción a la Farmacia", cod: "introfarma", requisitos: [] },
+      { nombre: "Inglés I", cod: "ing1", requisitos: [] },
+
+      { nombre: "Matemáticas II", cod: "mat2", requisitos: ["mat1"] },
+      { nombre: "Química General II", cod: "qg2", requisitos: ["qg1"] },
+      { nombre: "Morfología", cod: "morfo", requisitos: ["bio1"] },
+      { nombre: "Sello I", cod: "sello1", requisitos: ["introfarma"] },
+      { nombre: "Inglés II", cod: "ing2", requisitos: ["ing1"] },
+
+      // ... continúa aquí con todos los demás cursos como en tu malla
+    ];
+
+    const completados = new Set();
+
+    function verificarDisponibilidad(curso) {
+      return curso.requisitos.every(req => completados.has(req));
+    }
+
+    function actualizarVista() {
+      document.querySelectorAll('.course').forEach(div => {
+        const cod = div.dataset.cod;
+        const curso = cursos.find(c => c.cod === cod);
+        if (completados.has(cod)) {
+          div.classList.add("completed");
+          div.classList.remove("available");
+          div.classList.remove("locked");
+        } else if (verificarDisponibilidad(curso)) {
+          div.classList.add("available");
+          div.classList.remove("locked");
+          div.classList.remove("completed");
+        } else {
+          div.classList.add("locked");
+          div.classList.remove("available");
+          div.classList.remove("completed");
+        }
+      });
+    }
+
+    function crearMalla() {
+      const container = document.getElementById("malla");
+      let año = 1;
+      for (let i = 0; i < cursos.length; i += 5) {
+        const bloque = cursos.slice(i, i + 5);
+        const yearDiv = document.createElement("div");
+        yearDiv.className = "year";
+
+        const semestre = document.createElement("div");
+        semestre.className = "semester";
+
+        bloque.forEach(curso => {
+          const cursoDiv = document.createElement("div");
+          cursoDiv.className = "course";
+          cursoDiv.textContent = curso.nombre;
+          cursoDiv.dataset.cod = curso.cod;
+          cursoDiv.onclick = () => {
+            if (completados.has(curso.cod)) {
+              completados.delete(curso.cod);
+            } else if (verificarDisponibilidad(curso)) {
+              completados.add(curso.cod);
+            }
+            actualizarVista();
+          };
+          semestre.appendChild(cursoDiv);
+        });
+
+        yearDiv.appendChild(semestre);
+        container.appendChild(yearDiv);
+      }
+
+      actualizarVista();
+    }
+
+    crearMalla();
+  </script>
+</body>
 </html>
