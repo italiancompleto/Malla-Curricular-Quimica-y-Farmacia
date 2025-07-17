@@ -1,8 +1,264 @@
-<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Malla Química y Farmacia</title>
-  ...
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #fff0f5;
+      margin: 0;
+      padding: 20px;
+      color: #333;
+    }
+
+    h1 {
+      text-align: center;
+      color: #8a2be2;
+    }
+
+    .year {
+      margin-bottom: 30px;
+    }
+
+    .semester {
+      padding: 15px;
+      border: 2px solid #dda0dd;
+      border-radius: 12px;
+      margin-bottom: 15px;
+      background: #ffe4f3;
+    }
+
+    .semester h3 {
+      margin-top: 0;
+      color: #c71585;
+    }
+
+    .course {
+      padding: 10px;
+      margin: 5px 0;
+      border-radius: 8px;
+      background-color: #fbeaff;
+      cursor: pointer;
+      transition: 0.3s;
+      border: 1px solid #e4c3f3;
+    }
+
+    .course:hover {
+      background-color: #f3d5f7;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      background-color: #d8bfd8 !important;
+      color: #888;
+    }
+
+    .locked {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+
+    .course[data-tooltip]:hover::after {
+      content: attr(data-tooltip);
+      position: absolute;
+      background: #fff0f5;
+      border: 1px solid #dda0dd;
+      padding: 4px 8px;
+      border-radius: 6px;
+      font-size: 12px;
+      top: 100%;
+      left: 0;
+      z-index: 10;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+  <h1>Malla Química y Farmacia</h1>
+  <div id="malla"></div>
+
+  <script>
+    const malla = [
+      {
+        anio: 1,
+        semestres: [
+          {
+            nombre: "Semestre 1",
+            cursos: [
+              { nombre: "Matemáticas I" },
+              { nombre: "Química General I" },
+              { nombre: "Biología Celular" },
+              { nombre: "Introducción a la Farmacia" },
+              { nombre: "Inglés I" },
+            ]
+          },
+          {
+            nombre: "Semestre 2",
+            cursos: [
+              { nombre: "Matemáticas II", req: ["Matemáticas I"] },
+              { nombre: "Química General II", req: ["Química General I"] },
+              { nombre: "Morfología", req: ["Biología Celular"] },
+              { nombre: "Sello I", req: ["Introducción a la Farmacia"] },
+              { nombre: "Inglés II", req: ["Inglés I"] },
+            ]
+          }
+        ]
+      },
+      {
+        anio: 2,
+        semestres: [
+          {
+            nombre: "Semestre 3",
+            cursos: [
+              { nombre: "Físico Química I", req: ["Matemáticas II", "Química General II"] },
+              { nombre: "Fisiología", req: ["Morfología"] },
+              { nombre: "Química Orgánica I", req: ["Química General II"] },
+              { nombre: "Bioestadística", req: ["Matemáticas II"] },
+              { nombre: "Sello II", req: ["Sello I"] },
+              { nombre: "Inglés III", req: ["Inglés II"] },
+            ]
+          },
+          {
+            nombre: "Semestre 4",
+            cursos: [
+              { nombre: "Físico Química II", req: ["Físico Química I"] },
+              { nombre: "Química Orgánica II", req: ["Química Orgánica I"] },
+              { nombre: "Química Analítica", req: ["Química General II"] },
+              { nombre: "Fisiopatología", req: ["Fisiología"] },
+              { nombre: "Inglés IV", req: ["Inglés III"] },
+            ]
+          }
+        ]
+      },
+      {
+        anio: 3,
+        semestres: [
+          {
+            nombre: "Semestre 5",
+            cursos: [
+              { nombre: "Bioquímica", req: ["Química Orgánica II", "Físico Química II"] },
+              { nombre: "Farmacodinamia", req: ["Fisiopatología"] },
+              { nombre: "Botánica y Fitoterapia", req: ["Química Orgánica II"] },
+              { nombre: "Economía", req: ["Bioestadística"] },
+              { nombre: "Sello III", req: ["Sello II"] },
+              { nombre: "Análisis Instrumental", req: ["Química Analítica"] },
+            ]
+          },
+          {
+            nombre: "Semestre 6",
+            cursos: [
+              { nombre: "Farmacoquímica I", req: ["Química Orgánica II", "Farmacodinamia"] },
+              { nombre: "Microbiología e Inmunología", req: ["Bioquímica"] },
+              { nombre: "Bioquímica Clínica", req: ["Fisiopatología", "Bioquímica"] },
+              { nombre: "Farmacología I", req: ["Farmacodinamia"] },
+              { nombre: "Gestión Farmacéutica", req: ["Economía"] },
+              { nombre: "Legislación Farmacéutica", req: ["Química Orgánica II", "Química Analítica", "Fisiopatología"] },
+            ]
+          }
+        ]
+      },
+      {
+        anio: 4,
+        semestres: [
+          {
+            nombre: "Semestre 7",
+            cursos: [
+              { nombre: "Toxicología", req: ["Fisiopatología", "Farmacodinamia"] },
+              { nombre: "Salud Pública", req: ["Microbiología e Inmunología", "Economía"] },
+              { nombre: "Farmacoquímica II", req: ["Farmacoquímica I"] },
+              { nombre: "Farmacología II", req: ["Farmacología I"] },
+              { nombre: "Biofarmacia y Farmacocinética", req: ["Farmacología I"] },
+              { nombre: "Ética", req: ["Legislación Farmacéutica", "Gestión Farmacéutica"] },
+            ]
+          },
+          {
+            nombre: "Semestre 8",
+            cursos: [
+              { nombre: "Tecnología Farmacéutica I", req: ["Biofarmacia y Farmacocinética"] },
+              { nombre: "Electivo II", req: ["Ética"] },
+              { nombre: "Farmacia Asistencial", req: ["Salud Pública"] },
+              { nombre: "Nutrición", req: ["Biofarmacia y Farmacocinética"] },
+              { nombre: "Química de Alimentos", req: ["Farmacología II"] },
+              { nombre: "Electivo I", req: ["Farmacoquímica I", "Microbiología e Inmunología", "Farmacología I", "Bioquímica Clínica", "Legislación Farmacéutica", "Gestión Farmacéutica"] },
+            ]
+          }
+        ]
+      },
+      {
+        anio: 5,
+        semestres: [
+          {
+            nombre: "Semestre 9",
+            cursos: [
+              { nombre: "Tecnología Farmacéutica II", req: ["Tecnología Farmacéutica I"] },
+              { nombre: "Tecnología Cosmética", req: ["Tecnología Farmacéutica I"] },
+              { nombre: "Unidad de Investigación", req: ["Nutrición", "Electivo I", "Electivo II", "Química de Alimentos", "Tecnología Farmacéutica I", "Toxicología"] },
+              { nombre: "Farmacia Clínica", req: ["Electivo II", "Farmacología II"] },
+              { nombre: "Electivo III", req: ["Electivo I"] },
+            ]
+          },
+          {
+            nombre: "Semestre 10",
+            cursos: [
+              { nombre: "Internado en Farmacia Clínica", req: ["Farmacia Clínica", "Unidad de Investigación", "Tecnología Farmacéutica II", "Tecnología Cosmética"] },
+              { nombre: "Práctica Prolongada", req: ["Tecnología Farmacéutica II", "Tecnología Cosmética", "Unidad de Investigación", "Farmacia Clínica"] },
+              { nombre: "Práctica Obligatoria en Farmacia Comunitaria", req: ["Electivo I", "Química de Alimentos", "Electivo II", "Nutrición", "Tecnología Farmacéutica I"] },
+            ]
+          }
+        ]
+      }
+    ];
+
+    const approved = new Set();
+
+    const render = () => {
+      const container = document.getElementById('malla');
+      container.innerHTML = '';
+      malla.forEach(year => {
+        const yearDiv = document.createElement('div');
+        yearDiv.className = 'year';
+        year.semestres.forEach(sem => {
+          const semDiv = document.createElement('div');
+          semDiv.className = 'semester';
+          const title = document.createElement('h3');
+          title.textContent = sem.nombre;
+          semDiv.appendChild(title);
+
+          sem.cursos.forEach(curso => {
+            const cDiv = document.createElement('div');
+            cDiv.className = 'course';
+            cDiv.textContent = curso.nombre;
+
+            if (curso.req) {
+              cDiv.setAttribute('data-tooltip', 'Requiere: ' + curso.req.join(', '));
+              const locked = curso.req.some(r => !approved.has(r));
+              if (locked) cDiv.classList.add('locked');
+            }
+
+            if (approved.has(curso.nombre)) {
+              cDiv.classList.add('completed');
+            }
+
+            cDiv.addEventListener('click', () => {
+              if (approved.has(curso.nombre)) {
+                approved.delete(curso.nombre);
+              } else {
+                approved.add(curso.nombre);
+              }
+              render();
+            });
+
+            semDiv.appendChild(cDiv);
+          });
+
+          yearDiv.appendChild(semDiv);
+        });
+        container.appendChild(yearDiv);
+      });
+    };
+
+    render();
+  </script>
+</body>
 </html>
