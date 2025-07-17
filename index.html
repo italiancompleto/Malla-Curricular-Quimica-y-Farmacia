@@ -2,7 +2,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Malla Química y Farmacia - Vista Semestral</title>
+  <title>Malla Química y Farmacia</title>
   <style>
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
@@ -47,29 +47,35 @@
       max-height: 75vh;
       overflow-y: auto;
     }
-    .curso {
-      background-color: #f3e5f5;
-      margin-bottom: 6px;
-      padding: 6px 8px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background-color 0.3s ease;
-      user-select: none;
-      font-size: 0.9em;
-      line-height: 1.2em;
-    }
-    .curso:hover:not(.bloqueado) {
-      background-color: #e1bee7;
-    }
-    .curso.completado {
-      text-decoration: line-through;
-      background-color: #cbb3d9 !important;
-      color: #666;
-    }
-    .curso.bloqueado {
-      opacity: 0.4;
-      pointer-events: none;
-    }
+.curso {
+  background-color: #f3e5f5;
+  margin-bottom: 6px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+  user-select: none;
+  font-size: 0.9em;
+  line-height: 1.3em;
+  color: #4b0082;
+  border: 1.5px solid #ce93d8;
+}
+
+.curso:hover:not(.bloqueado):not(.completado) {
+  background-color: #d8b4e2;
+}
+
+.curso.completado {
+  background-color: #7b4397; /* morado pastel intenso */
+  color: #fff;
+  border-color: #5a2e6a;
+  text-decoration: line-through;
+}
+
+.curso.completado:hover {
+  background-color: #9350b8;
+  border-color: #7b4397;
+}
   </style>
 </head>
 <body>
