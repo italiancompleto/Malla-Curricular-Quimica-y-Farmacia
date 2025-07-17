@@ -101,22 +101,45 @@ td {
   pointer-events: none;
   box-shadow: none;
 }
-    @media (max-width: 768px) {
-  .semestre {
-    min-width: 100px;
-    padding: 0.3rem;
-  }
+    /* Para que los semestres se vean en fila y se pueda hacer scroll lateral en celular */
+.container {
+  display: flex;
+  gap: 1rem;
+  overflow-x: auto;
+  padding-bottom: 1rem;
+}
 
+/* Estilo de los semestres */
+.semestre {
+  min-width: 160px;
+  flex-shrink: 0;
+  background-color: #f0f0f8;
+  border-radius: 1rem;
+  padding: 0.5rem;
+  box-shadow: 0 0 5px rgba(0,0,0,0.1);
+}
+
+/* Estilo de los cursos */
+.curso {
+  background-color: #e0d5f7;
+  border-radius: 1rem;
+  padding: 0.4rem;
+  margin: 0.3rem 0;
+  font-size: 0.75rem;
+  text-align: center;
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+/* Mejoras solo en celulares */
+@media (max-width: 768px) {
   .curso {
-    font-size: 0.65rem;
-    padding: 0.3rem;
-    word-wrap: break-word;
-    white-space: normal;
-    text-align: center;
+    font-size: 0.7rem;
+    padding: 0.4rem;
   }
 
   h1 {
-    font-size: 1rem;
+    font-size: 1.2rem;
     text-align: center;
   }
 }
@@ -125,7 +148,7 @@ td {
 <body>
   <h1>Malla Química y Farmacia</h1>
   <div class="malla-container">
-    <table id="malla-table">
+    <table id="malla-table" class="container">
       <thead>
         <tr id="header-row">
           <!-- Aquí van los semestres -->
